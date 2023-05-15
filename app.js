@@ -32,6 +32,9 @@ const updateBugStatusAndDescription = (id, newStatus, newDescription) => {
     }
     return bug;
   });
+  
+   setBugs(updatedBugs);
+};
 
 
   // Function to handle updating the description of a bug
@@ -59,9 +62,6 @@ const updateBugDescription = (id, newDescription) => {
   setBugs(updatedBugs);
 };
 
-    
-    setBugs(updatedBugs);
-  };
 
   return (
     <div>
