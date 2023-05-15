@@ -2,23 +2,26 @@ import React, { useState } from 'react';
 
 const BugTracker = () => {
   const [bugs, setBugs] = useState([]);
-  const [newBug, setNewBug] = useState('');
+  const [newBug, setNewBug] = useState({ name: '', description: '' });
 
   // Function to handle adding a new bug to the list
-  const addBug = () => {
-    if (newBug.trim() === '') {
+  const addBug = (e) => {
+    e.preventDefault();
+
+    if (newBug.name.trim() === '' || newBug.description.trim() === '') {
       return;
     }
 
     const bug = {
       id: Date.now(),
-      description: newBug,
+      name: newBug.name,
+      description: newBug.description,
       status: 'Open',
       timestamp: new Date().toLocaleString()
     };
 
     setBugs([...bugs, bug]);
-    setNewBug('');
+    setNewBug({ name: '', description: '' });
   };
 
   // Function to handle updating the status of a bug
@@ -37,19 +40,26 @@ const BugTracker = () => {
     <div>
       <h1>Bug Tracker</h1>
 
-      <div>
+      <form onSubmit={addBug}>
         <input
           type="text"
-          value={newBug}
-          onChange={e => setNewBug(e.target.value)}
+          value={newBug.name}
+          onChange={e => setNewBug({ ...newBug, name: e.target.value })}
+          placeholder="Enter bug name"
+        />
+        <input
+          type="text"
+          value={newBug.description}
+          onChange={e => setNewBug({ ...newBug, description: e.target.value })}
           placeholder="Enter bug description"
         />
-        <button onClick={addBug}>Add Bug</button>
-      </div>
+        <button type="submit">Add Bug</button>
+      </form>
 
       <ul>
         {bugs.map(bug => (
           <li key={bug.id}>
+            <div>{bug.name}</div>
             <div>{bug.description}</div>
             <div>Status: {bug.status}</div>
             <div>Reported at: {bug.timestamp}</div>
